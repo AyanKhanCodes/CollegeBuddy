@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "Dr. Jane Smith",
+    "department": "Computer Science",
+    "email": "jane.smith@muj.edu.in",
+    "phone": "+91-1234567890",
+    "office": "Room 401, Academic Block 1",
+    "designation": "Professor"
+  },
+  {
+    "id": 2,
+    "name": "Prof. Alan Turing",
+    "department": "Mathematics",
+    "email": "alan.turing@muj.edu.in",
+    "phone": "+91-9876543210",
+    "office": "Room 305, Academic Block 2",
+    "designation": "Associate Professor"
+  },
+  {
+    "id": 3,
+    "name": "Dr. Grace Hopper",
+    "department": "Computer Science",
+    "email": "grace.hopper@muj.edu.in",
+    "phone": "+91-5556667777",
+    "office": "Room 412, Academic Block 1",
+    "designation": "Assistant Professor"
+  },
+  {
+    "id": 4,
+    "name": "Dr. C.V. Raman",
+    "department": "Physics",
+    "email": "cv.raman@muj.edu.in",
+    "phone": "+91-1112223333",
+    "office": "Room 210, Academic Block 3",
+    "designation": "HOD Physics"
+  },
+  {
+    "id": 5,
+    "name": "Prof. Homi Bhabha",
+    "department": "Engineering",
+    "email": "homi.bhabha@muj.edu.in",
+    "phone": "+91-4445556666",
+    "office": "Room 501, Academic Block 4",
+    "designation": "Professor"
+  }
+]
