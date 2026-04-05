@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ChatInput from './ChatInput.jsx'
 import MessageBubble from './MessageBubble.jsx'
 import TypingIndicator from './TypingIndicator.jsx'
@@ -17,6 +17,13 @@ function createMessage(text, sender) {
 export default function ChatBox() {
   const [messages, setMessages] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const messagesRef = useRef(null)
+
+  useEffect(() => {
+    const el = messagesRef.current
+    if (!el) return
+    el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' })
+  }, [messages, isLoading])
 
   const handleUserSubmit = async (text) => {
     setMessages((prev) => [...prev, createMessage(text, 'user')])
@@ -37,7 +44,7 @@ export default function ChatBox() {
 
   return (
     <div className="chat-box">
-      <div className="chat-box__messages">
+      <div className="chat-box__messages" ref={messagesRef}>
         {messages.map((msg) => (
           <MessageBubble
             key={msg.id}
