@@ -1,6 +1,9 @@
 # Node modules
 node_modules/
 
+# Vite
+frontend/dist/
+
 # Environment variables
 .env
 .env.*
