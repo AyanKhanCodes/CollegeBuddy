@@ -1,4 +1,6 @@
+import axios from 'axios'
 import { useEffect, useRef, useState } from 'react'
+import toast from 'react-hot-toast'
 import ChatInput from './ChatInput.jsx'
 import MessageBubble from './MessageBubble.jsx'
 import TypingIndicator from './TypingIndicator.jsx'
@@ -32,11 +34,17 @@ export default function ChatBox() {
       const data = await sendChatMessage(text)
       const reply = parseBotReply(data) || '(No reply)'
       setMessages((prev) => [...prev, createMessage(reply, 'bot')])
-    } catch {
-      setMessages((prev) => [
-        ...prev,
-        createMessage('Could not reach the server. Is the API running?', 'bot'),
-      ])
+    } catch (err) {
+      let message = 'Something went wrong. Please try again.'
+      if (axios.isAxiosError(err)) {
+        const status = err.response?.status
+        if (status != null && status >= 500) {
+          message = 'The server returned an error. Please try again later.'
+        } else if (err.code === 'ERR_NETWORK' || err.response == null) {
+          message = 'Cannot reach the server. Is the API running?'
+        }
+      }
+      toast.error(message)
     } finally {
       setIsLoading(false)
     }
