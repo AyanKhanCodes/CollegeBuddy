@@ -1,5 +1,11 @@
+import ChatBox from './components/ChatBox.jsx'
+
 function App() {
-  return <></>
+  return (
+    <div className="app-root">
+      <ChatBox />
+    </div>
+  )
 }
 
 export default App
