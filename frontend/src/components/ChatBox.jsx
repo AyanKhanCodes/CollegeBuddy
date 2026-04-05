@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ChatInput from './ChatInput.jsx'
 import MessageBubble from './MessageBubble.jsx'
+import TypingIndicator from './TypingIndicator.jsx'
 import { parseBotReply, sendChatMessage } from '../services/chatApi.js'
 
 function createMessage(text, sender) {
@@ -44,6 +45,11 @@ export default function ChatBox() {
             timestamp={msg.timestamp}
           />
         ))}
+        {isLoading ? (
+          <div className="chat-box__typing-wrap">
+            <TypingIndicator />
+          </div>
+        ) : null}
       </div>
       <div className="chat-box__input-area">
         <ChatInput onSubmit={handleUserSubmit} disabled={isLoading} />
