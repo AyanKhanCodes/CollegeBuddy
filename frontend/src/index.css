@@ -26,4 +26,16 @@ body {
 
 .app-root {
   min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0;
+}
+
+@media (min-width: 768px) {
+  .app-root {
+    padding: 1.5rem 1rem;
+    align-items: center;
+  }
 }
