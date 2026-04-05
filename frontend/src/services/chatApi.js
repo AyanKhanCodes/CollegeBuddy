@@ -15,4 +15,15 @@ export async function sendChatMessage(message) {
   return data
 }
 
+/** Normalize common FastAPI JSON shapes to a single assistant string. */
+export function parseBotReply(data) {
+  if (data == null) return ''
+  if (typeof data === 'string') return data
+  if (typeof data === 'object') {
+    const v = data.reply ?? data.response ?? data.message ?? data.text
+    if (typeof v === 'string') return v
+  }
+  return ''
+}
+
 export { api }

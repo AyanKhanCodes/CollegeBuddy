@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ChatInput from './ChatInput.jsx'
 import MessageBubble from './MessageBubble.jsx'
+import { parseBotReply, sendChatMessage } from '../services/chatApi.js'
 
 function createMessage(text, sender) {
   return {
@@ -13,9 +14,23 @@ function createMessage(text, sender) {
 
 export default function ChatBox() {
   const [messages, setMessages] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
-  const handleUserSubmit = (text) => {
+  const handleUserSubmit = async (text) => {
     setMessages((prev) => [...prev, createMessage(text, 'user')])
+    setIsLoading(true)
+    try {
+      const data = await sendChatMessage(text)
+      const reply = parseBotReply(data) || '(No reply)'
+      setMessages((prev) => [...prev, createMessage(reply, 'bot')])
+    } catch {
+      setMessages((prev) => [
+        ...prev,
+        createMessage('Could not reach the server. Is the API running?', 'bot'),
+      ])
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -31,7 +46,7 @@ export default function ChatBox() {
         ))}
       </div>
       <div className="chat-box__input-area">
-        <ChatInput onSubmit={handleUserSubmit} />
+        <ChatInput onSubmit={handleUserSubmit} disabled={isLoading} />
       </div>
     </div>
   )
