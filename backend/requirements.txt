@@ -1,4 +1,7 @@
 fastapi
 uvicorn
-google-generativeai
+ollama
 python-dotenv
+pytest
+pytest-asyncio
+httpx
