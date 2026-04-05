@@ -1,4 +1,5 @@
 import { useCallback, useRef } from 'react'
+import './ChatInput.css'
 
 function SendIcon() {
   return (

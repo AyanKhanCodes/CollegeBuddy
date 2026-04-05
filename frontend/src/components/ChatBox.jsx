@@ -3,6 +3,7 @@ import ChatInput from './ChatInput.jsx'
 import MessageBubble from './MessageBubble.jsx'
 import TypingIndicator from './TypingIndicator.jsx'
 import { parseBotReply, sendChatMessage } from '../services/chatApi.js'
+import './ChatBox.css'
 
 function createMessage(text, sender) {
   return {
