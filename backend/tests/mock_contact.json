@@ -1,0 +1,23 @@
+[
+  {
+    "category": "Key Administration",
+    "role": "Registrar",
+    "name": "Dr Amit Soni",
+    "phone": "0141-3999100 (Ext 102)",
+    "email": "registrar@jaipur.manipal.edu"
+  },
+  {
+    "category": "Faculty (CSE Dept)",
+    "role": "Professor and Hod",
+    "name": "Dr. Neha Chaudhary",
+    "phone": "9785500056",
+    "email": "chaudhary.neha@jaipur.manipal.edu"
+  },
+  {
+    "category": "General University Contacts",
+    "role": "General Query",
+    "name": "Helpdesk",
+    "phone": "0141-3999 100",
+    "email": "doic@jaipur.manipal.edu"
+  }
+]
