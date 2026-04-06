@@ -1,5 +1,5 @@
 import os
-import json
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -7,10 +7,21 @@ import ollama
 from dotenv import load_dotenv
 
 from prompt_templates import generate_prompt
+from data_retrieval import load_contacts_data, search_contacts, format_contact_results
 
 load_dotenv()
 
-app = FastAPI(title="CollegeBuddy API")
+# Load context data when the server starts
+CONTEXT_FILE = os.path.join(os.path.dirname(__file__), "data", "contact.json")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup: load contacts
+    load_contacts_data(CONTEXT_FILE)
+    yield
+    # Shutdown logic (if any)
+
+app = FastAPI(title="CollegeBuddy API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -19,16 +30,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Load context data
-CONTEXT_FILE = os.path.join(os.path.dirname(__file__), "data", "muj_contacts.json")
-
-def load_context():
-    try:
-        with open(CONTEXT_FILE, "r") as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return []
 
 class ChatRequest(BaseModel):
     message: str
@@ -42,8 +43,14 @@ async def health_check():
 
 @app.post("/chat", response_model=ChatResponse)
 async def chat_endpoint(request: ChatRequest):
-    context_data = load_context()
-    system_prompt = generate_prompt(context_data)
+    # A. Search for top 3 matching contacts based on the user's message
+    matched_contacts = search_contacts(request.message, top_n=3)
+    
+    # B & C. Format the results or inject "No contact data found" flag
+    formatted_data = format_contact_results(matched_contacts)
+    
+    # D. Construct the final system prompt with the injected subset of data
+    system_prompt = generate_prompt(formatted_data)
     
     messages = [
         {"role": "system", "content": system_prompt},
@@ -60,5 +67,4 @@ async def chat_endpoint(request: ChatRequest):
         content = response['message']['content']
         return ChatResponse(reply=content)
     except Exception as e:
-        # Catch connection errors, timeouts, etc
         raise HTTPException(status_code=503, detail=f"AI Service Error: {str(e)}")
