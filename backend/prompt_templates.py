@@ -9,12 +9,12 @@ Rule 2: ONLY answer based on the provided Contact Context below.
 Rule 3: If the user's query asks for information that is NOT found in the Contact Context, you MUST reply exactly with: 
 "I don't have that information in my current database."
 
---- CONTACT CONTEXT START ---
+[RETRIEVED CONTACT DATA]
+If the requested contact information is provided in the context below, output it exactly as written. If it is not in the context, do not guess or hallucinate an email or phone number. State that you cannot find them in the directory.
+
 {context_data}
 --- CONTACT CONTEXT END ---
 """
 
-def generate_prompt(context_json: list) -> str:
-    # Safely convert to a string layout
-    context_str = json.dumps(context_json, indent=2)
-    return SYSTEM_PROMPT_TEMPLATE.format(context_data=context_str)
+def generate_prompt(formatted_contacts: str) -> str:
+    return SYSTEM_PROMPT_TEMPLATE.format(context_data=formatted_contacts)

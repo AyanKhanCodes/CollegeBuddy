@@ -63,3 +63,25 @@ def search_contacts(query: str, top_n: int = 3) -> List[Dict[str, Any]]:
             matched_contacts.append(_contacts_cache[key])
             
     return matched_contacts
+
+def format_contact_results(results: List[Dict[str, Any]]) -> str:
+    """
+    Formats the raw JSON search results into clean, readable text 
+    for injection into the prompt.
+    """
+    if not results:
+        return "No contact data found for this query."
+        
+    formatted_texts = []
+    for contact in results:
+        name = contact.get("name") or "N/A"
+        department = contact.get("category") or "N/A"
+        role = contact.get("role") or "N/A"
+        email = contact.get("email") or "N/A"
+        phone = contact.get("phone") or "N/A"
+        
+        formatted_texts.append(
+            f"Name: {name}, Role: {role}, Department: {department}, Email: {email}, Phone: {phone}"
+        )
+        
+    return "\n".join(formatted_texts)
